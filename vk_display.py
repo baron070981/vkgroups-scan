@@ -82,11 +82,21 @@ class MainWindow(tk.Tk):
         return True
 
 
+    def default_insert(self, state_insert = True):
+        if state_insert:
+            self.log_entry.insert(0,'89992948531')
+            self.pas_entry.insert(0,'baron070981')
+            self.appid_combo.insert(0,'7211649')
+            self.owner_combo.insert(0,'-60427812')
+
+
+
 st = False
 
 def action(event):
     global st
     if root.STATE_DATA == False:
+        root.default_insert()
         st = root.get_data_from_widgets()
         print(root.login, root.password, root.app_id, root.owner_id, st)
     else:
