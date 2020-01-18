@@ -9,11 +9,11 @@ button_state = False
 get_data_state = False
 init_api_state = True
 if_api_init = False
+num = 191827827276363564355454
 
 
-# hdhdfgfggfghdfhdfcvgbcvbcvc
+num2 = 0
 
-var = 156
 
 
 
