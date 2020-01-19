@@ -70,7 +70,7 @@ class VkGroupsHelper:
                     url = data_items['attachments'][0]['photo']['sizes'][-1]['url']
                     iid = data_items['attachments'][0]['photo']['id']
                     if iid not in self.cach_ids:
-                        print(iid,' ', url)
+                        #print(iid,' ', url)
                         self.cach_ids.add(iid)
                         data_list.append(url)
 
