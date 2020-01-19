@@ -3,6 +3,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import os
 import variables as var
+import requests
+import time
 
 
 
@@ -88,6 +90,26 @@ class MainWindow(tk.Tk):
             self.pas_entry.insert(0,'baron070981')
             self.appid_combo.insert(0,'7211649')
             self.owner_combo.insert(0,'-60427812')
+            
+    
+    def show_image(self, url:str, id_img:int, folder:str = 'imagesvk', save_state = True):
+        os.makedirs(folder, exist_ok = True)
+        req = requests.get(url)
+        if req.status_code != 200:
+            return False
+        t = time.ctime().strip()
+        t = t.split(' ')
+        t = '_'.join(t)
+        
+        filename = str(id_img)+'_'+t+'.jpg'
+        fold = folder+ '\\' + filename
+        with open(filename, 'w') as f:
+            try:
+                f.write(req.content)
+                self.text_data.insert(0, 'Succesfull load: ', filename)
+            except:
+                self.text_data.insert(0, 'Error load: '+filename)
+            
 
 
 
