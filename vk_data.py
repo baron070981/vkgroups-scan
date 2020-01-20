@@ -73,7 +73,7 @@ class VkGroupsHelper:
         for data_items in group_data['items']:
             if 'attachments' in data_items:
                 if 'photo' in data_items['attachments'][0]:
-                    url = data_items['attachments'][0]['photo']['sizes'][-3]['url']
+                    url = data_items['attachments'][0]['photo']['sizes'][-2]['url']
                     iid = data_items['attachments'][0]['photo']['id']
                     if iid not in self.cach_ids:
                         #print(iid,' ', url)
