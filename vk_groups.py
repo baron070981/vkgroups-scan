@@ -13,7 +13,7 @@ dtc = vkd.VkData()
 vk = vkd.VkGroupsHelper()
 root = disp.MainWindow()
 LOCK = False
-
+root.default_insert()
 log.accum_logs([str(dtc.__class__), str(vk.__class__), str(root.__class__)])
 
 
@@ -27,7 +27,7 @@ def action():
     log.accum_logs(['STATE DATA:'+str(root.STATE_DATA), 'INIT API:'+str(dtc.API_INIT),
                     'DATA STATE:'+str(dtc.DATA_STATE)])
     if root.STATE_DATA == False:
-        root.default_insert()
+        #root.default_insert()
         dtc.DATA_STATE = root.get_data_from_widgets()
         log.accum_logs(['STATE DATA:'+str(root.STATE_DATA), 'DATA STATE:'+str(dtc.DATA_STATE)])
         if dtc.API_INIT == False:
@@ -59,7 +59,6 @@ def get_data_images(LOCK_STATE = False):
         log.accum_logs('---GETTING DATAS-----')
         group_data = vk.get_groups_data(offset = dtc.OFFSET, count = 10, owner_id = root.owner_id)
         vk.parse_group_data(group_data, data_list)
-        root.button_start.configure(text = 'data')
         root.update()
 
 
