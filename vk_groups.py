@@ -33,14 +33,16 @@ def action():
         if dtc.API_INIT == False:
             dtc.API_INIT = vk.init_api(root.login, root.password, root.app_id)
             log.accum_logs('Init api good' + str(dtc.API_INIT))
-    
+
     if dtc.DATA_STATE and root.STATE_DATA and dtc.API_INIT:
         log.accum_logs('-----Returned from action TRUE-----')
         LOCK = True
     else:
-        log.accum_logs('----Returned from action TRUE----')
+        log.accum_logs('----Returned from action FALSE----')
+        log.accum_logs(['STATE DATA:'+str(root.STATE_DATA), 'INIT API:'+str(dtc.API_INIT),
+                        'DATA STATE:'+str(dtc.DATA_STATE)])
         LOCK = False
-        
+
 
 
 data_list = list()
@@ -61,18 +63,18 @@ def get_data_images(LOCK_STATE = False):
         root.update()
 
 
-
 def mains(event):
     global LOCK
     action()
     if LOCK:
         while True:
             get_data_images(LOCK_STATE = dtc.DATA_STATE)
-            dtc.OFFSET += 30
+            dtc.OFFSET += 10
             pprint(data_list)
             for data in data_list:
-                root.show_image(data, 1 )
-            if dtc.OFFSET >= 30:
+                root.show_image(data.url_img, data.img_id, save_state = False)
+                time.sleep(.600)
+            if dtc.OFFSET >= 300:
                 break
 
 
@@ -84,7 +86,7 @@ if __name__ == '__main__':
 
     log.accum_logs('To cicles mainloop')
     root.button_start.bind('<Button 1>', mains)
-    
+
     root.update()
     root.mainloop()
     log.write_from_loglist()

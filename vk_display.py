@@ -51,6 +51,7 @@ class MainWindow(tk.Tk):
         self.password = None
         self.app_id = None
         self.owner_id = None
+        self.image = None
 
 
     def set_lists(self, appid_list, owner_list):
@@ -86,12 +87,15 @@ class MainWindow(tk.Tk):
 
     def default_insert(self, state_insert = True):
         if state_insert:
-            self.log_entry.insert(0,'89992948531')
-            self.pas_entry.insert(0,'baron070981')
-            self.appid_combo.insert(0,'7211649')
+            self.log_entry.insert(0,'')
+            self.pas_entry.insert(0,'')
+            self.appid_combo.insert(0,'')
             self.owner_combo.insert(0,'-60427812')
-            
-    
+
+
+
+
+
     def show_image(self, url:str, id_img:int, folder:str = 'imagesvk', save_state = True):
         os.makedirs(folder, exist_ok = True)
         req = requests.get(url)
@@ -100,16 +104,28 @@ class MainWindow(tk.Tk):
         t = time.ctime().strip()
         t = t.split(' ')
         t = '_'.join(t)
-        
-        filename = str(id_img)+'_'+t+'.jpg'
+        t = t.split(':')
+        t = '_'.join(t)
+        filename = str(id_img)+'.jpg'
         fold = folder+ '\\' + filename
-        with open(filename, 'w') as f:
+        state_file = False
+        with open(fold, 'wb') as f:
             try:
                 f.write(req.content)
-                self.text_data.insert(0, 'Succesfull load: ', filename)
+                self.text_data.delete(1.0, tk.END)
+                self.text_data.insert(1.0, 'Succes load:'+url)
+                state_file = True
             except:
-                self.text_data.insert(0, 'Error load: '+filename)
-            
+                self.text_data.delete(1.0, tk.END)
+                self.text_data.insert(1.0, 'Error load: ' + url)
+        if state_file:
+            self.image = ImageTk.PhotoImage(Image.open(fold))
+            self.img_label.configure(image = self.image)
+            self.img_label.image = self.image
+            self.update()
+            if save_state == False:
+                os.remove(fold)
+
 
 
 
@@ -132,13 +148,4 @@ def action(event):
 
 
 if __name__ == '__main__':
-    root = MainWindow()
-    if st == False:
-        print('Click')
-        root.button_start.bind('<Button 1>', action)
-    elif st:
-        print(' Acnion good')
-
-
-    root.mainloop()
-
+    pass

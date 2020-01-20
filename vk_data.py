@@ -24,6 +24,12 @@ class VkData:
 
 
 
+@dataclass
+class DataImg:
+    img_id:int = 0
+    url_img:str = ''
+
+
 class VkGroupsHelper:
 
     def __init__(self):
@@ -67,12 +73,13 @@ class VkGroupsHelper:
         for data_items in group_data['items']:
             if 'attachments' in data_items:
                 if 'photo' in data_items['attachments'][0]:
-                    url = data_items['attachments'][0]['photo']['sizes'][-1]['url']
+                    url = data_items['attachments'][0]['photo']['sizes'][-3]['url']
                     iid = data_items['attachments'][0]['photo']['id']
                     if iid not in self.cach_ids:
                         #print(iid,' ', url)
                         self.cach_ids.add(iid)
-                        data_list.append(url)
+                        data_list.append(DataImg(iid, url))
+
 
 
 
