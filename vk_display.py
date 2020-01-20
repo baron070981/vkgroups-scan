@@ -6,6 +6,7 @@ import variables as var
 import requests
 import time
 from tkinter import messagebox
+import re
 
 
 
@@ -30,22 +31,22 @@ class MainWindow(tk.Tk):
         self.button_start = tk.Button(text = 'сканировать', bg = 'red', fg = '#ffffff')
 
         self.label_data = tk.Label(text = 'Данные:')
-        self.text_data = tk.Text(bg = 'blue', fg = 'yellow', height=2)
+        self.text_data = tk.Text(bg = 'blue', fg = 'yellow', height=2, width = 10)
 
         self.img_label = tk.Label(bg = '#555555')
 
-        self.log_label.grid(row = 0, column = 0, columnspan = 2, sticky = 'w'+'s'+'n'+'e')
-        self.log_entry.grid(row = 1, column = 0, columnspan = 2, padx = 10, sticky = 'w'+'s'+'n'+'e')
-        self.pas_label.grid(row = 0, column = 2, columnspan = 2, sticky = 'w'+'s'+'n'+'e')
-        self.pas_entry.grid(row = 1, column = 2, columnspan = 2, padx = 10, sticky = 'w'+'s'+'n'+'e')
-        self.appid_label.grid(row = 2, column = 0, columnspan = 2, sticky = 'w'+'s'+'n'+'e')
-        self.appid_combo.grid(row = 3, column = 0, columnspan = 2, padx = 10, sticky = 'w'+'s'+'n'+'e')
-        self.owner_label.grid(row = 2, column = 2, columnspan = 2, sticky = 'w'+'s'+'n'+'e')
-        self.owner_combo.grid(row = 3, column = 2, columnspan = 2, padx = 10, sticky = 'w'+'s'+'n'+'e')
-        self.button_start.grid(row = 4, column = 0, columnspan = 4, padx = 10, pady = 15, sticky = 'w'+'s'+'n'+'e')
-        self.label_data.grid(row = 5, column = 0, pady = 10, sticky = 'w'+'s'+'n'+'e')
-        self.text_data.grid(row = 5, column = 1, columnspan = 3, padx = 10, pady = 10, sticky = 'w'+'e')
-        self.img_label.grid(row = 6, column = 0, columnspan = 4, sticky = 'w'+'s'+'n'+'e')
+        self.log_label.grid(row = 0, column = 0, sticky = 'w'+'s'+'n'+'e')
+        self.log_entry.grid(row = 1, column = 0, padx = 10, sticky = 'w'+'s'+'n'+'e')
+        self.pas_label.grid(row = 2, column = 0, sticky = 'w'+'s'+'n'+'e')
+        self.pas_entry.grid(row = 3, column = 0, columnspan = 2, padx = 10, sticky = 'w'+'s'+'n'+'e')
+        self.appid_label.grid(row = 4, column = 0, sticky = 'w'+'s'+'n'+'e')
+        self.appid_combo.grid(row = 5, column = 0, padx = 10, sticky = 'w'+'s'+'n'+'e')
+        self.owner_label.grid(row = 6, column = 0, sticky = 'w'+'s'+'n'+'e')
+        self.owner_combo.grid(row = 7, column = 0, padx = 10, sticky = 'w'+'s'+'n'+'e')
+        self.button_start.grid(row = 8, column = 0, padx = 10, pady = 15, sticky = 'w'+'s'+'n'+'e')
+        self.label_data.grid(row = 9, column = 0, pady = 10, sticky = 'w'+'s'+'n'+'e')
+        self.text_data.grid(row = 10, column = 0, padx = 10, pady = 10, sticky = 'w'+'e')
+        self.img_label.grid(row = 0, rowspan = 11, column = 1, sticky = 'w'+'s'+'n'+'e')
 
         self.STATE_DATA = False
         self.login = None
@@ -87,15 +88,52 @@ class MainWindow(tk.Tk):
 
 
     def default_insert(self, state_insert = True):
+        '''
+    формат файла appdata.txt:
+      login:user login
+      password:user password    
+      appid:app_id
+      .....
+      .....
+        может быть сколько угодно
+      owner:owner_id
+      ......
+      ......
+        может быть сколько угодно
+    
+    порядок строк строго соблюдать не обязательно
+    в каждой строке должно быть только одно значение
+        '''
         if state_insert:
             if os.path.exists('appdata.txt') == False:
                 messagebox.showwarning('Warnning', 'Нет файла с данными')
                 return False
             with open('appdata.txt', 'r') as f:
                 data = f.read().split('\n')
+                parent = r'(.+):(.+)'
                 for line in data:
+                    if 'own' in line[0:5].strip():
+                        try:
+                            owner = int(re.search(parent, line).group(2).strip())
+                            self.owner_list.append(owner)
+                        except:
+                            continue
+                    if 'app' in line[0:5].strip():
+                        try:
+                            appid = int(re.search(parent, line).group(2).strip())
+                            self.app_id_list.append(appid)
+                        except:
+                            continue
                     if 'log' in line[0:5].strip():
-                        print(line)
+                        self.login = re.search(parent, line).group(2).strip()
+                    if 'pas' in line[0:5].strip():
+                        self.password = re.search(parent, line).group(2).strip()
+            self.owner_combo.config(values = self.owner_list)
+            self.appid_combo.config(values = self.app_id_list)
+            self.owner_combo.set(value = self.owner_list[0])
+            self.log_entry.insert(0, self.login)
+            self.pas_entry.insert(0, self.password)
+            self.appid_combo.set(value = self.app_id_list[0])
 
 
 
@@ -142,6 +180,8 @@ class MainWindow(tk.Tk):
 if __name__ == '__main__':
     root = MainWindow()
     root.default_insert()
+    print(root.default_insert.__doc__)
+    root.mainloop()
 
 
 
