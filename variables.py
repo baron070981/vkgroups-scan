@@ -10,7 +10,8 @@ get_data_state = False
 init_api_state = True
 if_api_init = False
 
-
+app_ids = list()
+owner_ids = list()
 
 
 
