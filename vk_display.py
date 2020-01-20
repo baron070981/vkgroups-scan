@@ -5,6 +5,7 @@ import os
 import variables as var
 import requests
 import time
+from tkinter import messagebox
 
 
 
@@ -87,10 +88,14 @@ class MainWindow(tk.Tk):
 
     def default_insert(self, state_insert = True):
         if state_insert:
-            self.log_entry.insert(0,'')
-            self.pas_entry.insert(0,'')
-            self.appid_combo.insert(0,'')
-            self.owner_combo.insert(0,'-60427812')
+            if os.path.exists('appdata.txt') == False:
+                messagebox.showwarning('Warnning', 'Нет файла с данными')
+                return False
+            with open('appdata.txt', 'r') as f:
+                data = f.read().split('\n')
+                for line in data:
+                    if 'log' in line[0:5].strip():
+                        print(line)
 
 
 
@@ -129,23 +134,23 @@ class MainWindow(tk.Tk):
 
 
 
-st = False
-
-def action(event):
-    global st
-    if root.STATE_DATA == False:
-        root.default_insert()
-        st = root.get_data_from_widgets()
-        print(root.login, root.password, root.app_id, root.owner_id, st)
-    else:
-        print('Нет доступа к данным. ->', root.login, root.password, root.app_id, root.owner_id, st)
-
-
-
 
 
 
 
 
 if __name__ == '__main__':
-    pass
+    root = MainWindow()
+    root.default_insert()
+
+
+
+
+
+
+
+
+
+
+
+
