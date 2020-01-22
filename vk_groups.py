@@ -6,7 +6,8 @@ import vk_data as vkd
 import variables as var
 import logs
 from pprint import pprint
-
+import tkinter
+from PIL import ImageTk, Image
 
 log = logs.Logs()
 dtc = vkd.VkData()

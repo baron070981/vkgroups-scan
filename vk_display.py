@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from PIL import ImageTk, Image
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -18,19 +20,19 @@ class MainWindow(tk.Tk):
 
         super(MainWindow, self).__init__()
 
-        self.log_label = tk.Label(text = 'Логин')
-        self.pas_label = tk.Label(text = 'Пароль')
-        self.appid_label = tk.Label(text = 'id приложения')
-        self.owner_label = tk.Label(text = 'id группы')
+        self.log_label = tk.Label(text = 'login')
+        self.pas_label = tk.Label(text = 'password')
+        self.appid_label = tk.Label(text = 'id app')
+        self.owner_label = tk.Label(text = 'id club')
 
         self.log_entry = tk.Entry()
         self.pas_entry = tk.Entry()
         self.appid_combo = ttk.Combobox(values = self.app_id_list, height = 3)
         self.owner_combo = ttk.Combobox(values = self.owner_list, height = 3)
 
-        self.button_start = tk.Button(text = 'сканировать', bg = 'red', fg = '#ffffff')
+        self.button_start = tk.Button(text = 'scan', bg = 'red', fg = '#ffffff')
 
-        self.label_data = tk.Label(text = 'Данные:')
+        self.label_data = tk.Label(text = 'data:')
         self.text_data = tk.Text(bg = 'blue', fg = 'yellow', height=2, width = 10)
 
         self.img_label = tk.Label(bg = '#555555')
@@ -88,25 +90,25 @@ class MainWindow(tk.Tk):
 
 
     def default_insert(self, state_insert = True):
-        '''
-    формат файла appdata.txt:
-      login:user login
-      password:user password    
-      appid:app_id
-      .....
-      .....
-        может быть сколько угодно
-      owner:owner_id
-      ......
-      ......
-        может быть сколько угодно
+        # '''
+    # формат файла appdata.txt:
+      # login:user login
+      # password:user password    
+      # appid:app_id
+      # .....
+      # .....
+        # может быть сколько угодно
+      # owner:owner_id
+      # ......
+      # ......
+        # может быть сколько угодно
     
-    порядок строк строго соблюдать не обязательно
-    в каждой строке должно быть только одно значение
-        '''
+    # порядок строк строго соблюдать не обязательно
+    # в каждой строке должно быть только одно значение
+        # '''
         if state_insert:
             if os.path.exists('appdata.txt') == False:
-                messagebox.showwarning('Warnning', 'Нет файла с данными')
+                messagebox.showwarning('Warnning', 'Not found file')
                 return False
             with open('appdata.txt', 'r') as f:
                 data = f.read().split('\n')
@@ -139,7 +141,7 @@ class MainWindow(tk.Tk):
 
 
 
-    def show_image(self, url:str, id_img:int, folder:str = 'imagesvk', save_state = True):
+    def show_image(self, url, id_img, folder = 'imagesvk', save_state = True):
         os.makedirs(folder, exist_ok = True)
         req = requests.get(url)
         if req.status_code != 200:
