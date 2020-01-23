@@ -58,6 +58,10 @@ class MainWindow(tk.Tk):
         self.owner_id = None
         self.image = None
         self.file_state = False
+        self.club_folder = ''
+        self.img_id_file = ''
+        self.img_club_folder = ''
+        self.id_img_list = list()
 
 
     def set_lists(self, appid_list, owner_list):
@@ -98,6 +102,26 @@ class MainWindow(tk.Tk):
                     self.file_state = True
                 except:
                     messagebox.showwarning('Warning', 'Error load data to file')
+        self.club_folder = 'club'+str(abs(self.owner_id))
+        self.img_club_folder = 'img'+str(abs(self.owner_id))
+        self.img_id_file = 'clubids'+str(abs(self.owner_id))+'.txt'
+        os.makedirs(self.club_folder, exist_ok = True)
+        os.chdir(self.club_folder)
+        os.makedirs(self.img_club_folder, exist_ok = True)
+        with open(self.img_id_file, 'a') as f:
+            pass
+        with open(self.img_id_file, 'r') as f:
+            while True:
+                temp = f.readline().strip()
+                if not temp:
+                    break
+                try:
+                    self.id_img_list.append(int(temp))
+                except:
+                    continue
+                
+        os.chdir('..')
+        
         return True
 
 
@@ -154,35 +178,46 @@ class MainWindow(tk.Tk):
 
 
 
-    def show_image(self, url, id_img, folder = 'imagesvk', save_state = True):
-        os.makedirs(folder, exist_ok = True)
-        req = requests.get(url)
-        if req.status_code != 200:
-            return False
-        t = time.ctime().strip()
-        t = t.split(' ')
-        t = '_'.join(t)
-        t = t.split(':')
-        t = '_'.join(t)
-        filename = str(id_img)+'.jpg'
-        fold = folder+ '\\' + filename
-        state_file = False
-        with open(fold, 'wb') as f:
-            try:
-                f.write(req.content)
-                self.text_data.delete(1.0, tk.END)
-                self.text_data.insert(1.0, 'Succes load:'+url)
-                state_file = True
-            except:
-                self.text_data.delete(1.0, tk.END)
-                self.text_data.insert(1.0, 'Error load: ' + url)
-        if state_file:
-            self.image = ImageTk.PhotoImage(Image.open(fold))
-            self.img_label.configure(image = self.image)
-            self.img_label.image = self.image
-            self.update()
-            if save_state == False:
-                os.remove(fold)
+    def show_image(self, url, id_img:int, folder = '', save_state = True):
+        if id_img not in self.id_img_list:
+            if folder != '':
+                os.makedirs(folder, exist_ok = True)
+            else:
+                folder = self.club_folder+'\\'+self.img_club_folder
+            id_file = self.club_folder+'\\'+self.img_id_file
+            req = requests.get(url)
+            if req.status_code != 200:
+                return False
+            t = time.ctime().strip()
+            t = t.split(' ')
+            t = '_'.join(t)
+            t = t.split(':')
+            t = '_'.join(t)
+            filename = str(id_img)+'.jpg'
+            fold = folder+ '\\' + filename
+            state_file = False
+            with open(fold, 'wb') as f:
+                try:
+                    f.write(req.content)
+                    self.text_data.delete(1.0, tk.END)
+                    self.text_data.insert(1.0, 'Succes load:'+url)
+                    state_file = True
+                except:
+                    self.text_data.delete(1.0, tk.END)
+                    self.text_data.insert(1.0, 'Error load: ' + url)
+            with open(id_file, 'a') as f:
+                try:
+                    f.write(str(id_img)+'\n')
+                    print('Write id:', id_img)
+                except:
+                    print('Error write id to file')
+            if state_file:
+                self.image = ImageTk.PhotoImage(Image.open(fold))
+                self.img_label.configure(image = self.image)
+                self.img_label.image = self.image
+                self.update()
+                if save_state == False:
+                    os.remove(fold)
 
 
 
