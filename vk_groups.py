@@ -75,7 +75,7 @@ def mains(event):
             dtc.OFFSET += 10
             pprint(data_list)
             for data in data_list:
-                root.show_image(data.url_img, data.img_id, save_state = False)
+                root.show_image(data.url_img, data.img_id, save_state = True)
                 time.sleep(.600)
             if dtc.OFFSET >= 300:
                 break
