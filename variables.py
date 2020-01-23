@@ -22,5 +22,3 @@ owner_ids = list()
 
 
 
-
-

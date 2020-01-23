@@ -9,12 +9,15 @@ from pprint import pprint
 import tkinter
 from PIL import ImageTk, Image
 
+filestate = False
+
+
 log = logs.Logs()
 dtc = vkd.VkData()
 vk = vkd.VkGroupsHelper()
 root = disp.MainWindow()
 LOCK = False
-root.default_insert()
+root.file_state = root.default_insert()
 log.accum_logs([str(dtc.__class__), str(vk.__class__), str(root.__class__)])
 
 

@@ -86,11 +86,7 @@ class VkGroupsHelper:
 
 
 if __name__ == '__main__':
-    mainapi = VkGroupsHelper()
-    mainapi.init_api('89992948531', 'baron070981', 7211649)
-    print(mainapi)
-    group_api = mainapi.get_groups_data(owner_id = -60427812)
-    pprint(group_api)
+    pass
 
 
 

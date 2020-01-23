@@ -9,6 +9,7 @@ import requests
 import time
 from tkinter import messagebox
 import re
+import sys
 
 
 
@@ -56,6 +57,7 @@ class MainWindow(tk.Tk):
         self.app_id = None
         self.owner_id = None
         self.image = None
+        self.file_state = False
 
 
     def set_lists(self, appid_list, owner_list):
@@ -86,26 +88,36 @@ class MainWindow(tk.Tk):
                 if self.owner_id == 0:
                     self.owner_id = -100
         self.STATE_DATA = True
+        if self.file_state == False:
+            with open('appdata.txt', 'w') as f:
+                try:
+                    f.write('login:'+self.login+'\n')
+                    f.write('password:'+self.password+'\n')
+                    f.write('app_id:'+str(self.app_id)+'\n')
+                    f.write('owner:'+str(self.owner_id)+'\n')
+                    self.file_state = True
+                except:
+                    messagebox.showwarning('Warning', 'Error load data to file')
         return True
 
 
     def default_insert(self, state_insert = True):
-        # '''
-    # формат файла appdata.txt:
-      # login:user login
-      # password:user password    
-      # appid:app_id
-      # .....
-      # .....
-        # может быть сколько угодно
-      # owner:owner_id
-      # ......
-      # ......
-        # может быть сколько угодно
+        '''
+    формат файла appdata.txt:
+      login:user login
+      password:user password    
+      appid:app_id
+      .....
+      .....
+        может быть сколько угодно
+      owner:owner_id
+      ......
+      ......
+        может быть сколько угодно
     
-    # порядок строк строго соблюдать не обязательно
-    # в каждой строке должно быть только одно значение
-        # '''
+    порядок строк строго соблюдать не обязательно
+    в каждой строке должно быть только одно значение
+        '''
         if state_insert:
             if os.path.exists('appdata.txt') == False:
                 messagebox.showwarning('Warnning', 'Not found file')
@@ -136,6 +148,7 @@ class MainWindow(tk.Tk):
             self.log_entry.insert(0, self.login)
             self.pas_entry.insert(0, self.password)
             self.appid_combo.set(value = self.app_id_list[0])
+            return True
 
 
 
