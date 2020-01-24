@@ -36,7 +36,7 @@ class MainWindow(tk.Tk):
         self.label_data = tk.Label(text = 'data:')
         self.text_data = tk.Text(bg = 'blue', fg = 'yellow', height=2, width = 10)
 
-        self.img_label = tk.Label(bg = '#555555')
+        self.img_label = tk.Label(bg = '#6EC4FB')
 
         self.log_label.grid(row = 0, column = 0, sticky = 'w'+'s'+'n'+'e')
         self.log_entry.grid(row = 1, column = 0, padx = 10, sticky = 'w'+'s'+'n'+'e')
@@ -134,20 +134,20 @@ class MainWindow(tk.Tk):
 
     def default_insert(self, state_insert = True):
         '''
-    формат файла appdata.txt:
-      login:user login
-      password:user password    
-      appid:app_id
-      .....
-      .....
-        может быть сколько угодно
-      owner:owner_id
-      ......
-      ......
-        может быть сколько угодно
-    
-    порядок строк строго соблюдать не обязательно
-    в каждой строке должно быть только одно значение
+формат файла appdata.txt:
+  login:user login
+  password:user password    
+  appid:app_id
+  .....
+  .....
+    может быть сколько угодно
+  owner:owner_id
+  ......
+  ......
+    может быть сколько угодно
+
+порядок строк строго соблюдать не обязательно
+в каждой строке должно быть только одно значение
         '''
         if state_insert:
             if os.path.exists('appdata.txt') == False:
@@ -185,7 +185,7 @@ class MainWindow(tk.Tk):
 
 
 
-    def show_image(self, url, id_img:int, folder = '', save_state = True):
+    def show_image(self, url:str, id_img:int, folder = '', save_state = True):
         if id_img not in self.id_img_list:
             if folder != '':
                 os.makedirs(folder, exist_ok = True)
