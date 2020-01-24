@@ -8,10 +8,11 @@ import logs
 from pprint import pprint
 import tkinter
 from PIL import ImageTk, Image
+from tkinter import messagebox
 
 filestate = False
 
-
+GETDATA = True
 log = logs.Logs()
 dtc = vkd.VkData()
 vk = vkd.VkGroupsHelper()
@@ -31,7 +32,6 @@ def action():
     log.accum_logs(['STATE DATA:'+str(root.STATE_DATA), 'INIT API:'+str(dtc.API_INIT),
                     'DATA STATE:'+str(dtc.DATA_STATE)])
     if root.STATE_DATA == False:
-        #root.default_insert()
         dtc.DATA_STATE = root.get_data_from_widgets()
         log.accum_logs(['STATE DATA:'+str(root.STATE_DATA), 'DATA STATE:'+str(dtc.DATA_STATE)])
         if dtc.API_INIT == False:
@@ -58,26 +58,32 @@ def get_data_images(LOCK_STATE = False):
     global root
     print(dtc, vk, root)
     global data_list
+    global GETDATA
     log.accum_logs(['LOCK STATE:'+str(LOCK_STATE)])
-    if LOCK_STATE == True:
+    if LOCK_STATE == True and GETDATA == True:
         log.accum_logs('---GETTING DATAS-----')
         group_data = vk.get_groups_data(offset = dtc.OFFSET, count = 10, owner_id = root.owner_id)
         vk.parse_group_data(group_data, data_list)
         root.update()
-
+print
 
 def mains(event):
     global LOCK
+    global GETDATA
     action()
     if LOCK:
         while True:
             get_data_images(LOCK_STATE = dtc.DATA_STATE)
             dtc.OFFSET += 10
-            pprint(data_list)
+            if len(data_list) > 0 and data_list[0].img_id in root.last_id_img_list:
+                messagebox.showinfo('Info', 'Ни чего нового не найдено')
+                LOCK = False
+                GETDATA = False
+                break
             for data in data_list:
                 root.show_image(data.url_img, data.img_id, save_state = True)
                 time.sleep(.600)
-            if dtc.OFFSET >= 300:
+            if dtc.OFFSET >= 300 or GETDATA == False:
                 break
 
 

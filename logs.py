@@ -20,7 +20,6 @@ class Logs:
         log_var = log_var[0]
         if type(log_var) == list:
             for data in log_var:
-                print('\nTo accum logs:', data, '\n'+'='*30)
                 t = time.ctime()
                 log = str(self.COUNT)+'. '+t+' :: '+str(data)
                 self.log_list.append(log)
@@ -29,7 +28,6 @@ class Logs:
             t = time.ctime()
             log = str(self.COUNT)+'. '+t+' :: '+str(log_var)
             self.log_list.append(log)
-            print('\nTo accum logs:', log_var, '\n'+'='*30)
             self.COUNT +=1
     
     

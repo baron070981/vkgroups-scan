@@ -62,6 +62,7 @@ class MainWindow(tk.Tk):
         self.img_id_file = ''
         self.img_club_folder = ''
         self.id_img_list = list()
+        self.last_id_img_list = list()
 
 
     def set_lists(self, appid_list, owner_list):
@@ -119,7 +120,13 @@ class MainWindow(tk.Tk):
                     self.id_img_list.append(int(temp))
                 except:
                     continue
-                
+        
+        if len(self.id_img_list) > 10:
+            lenlst = len(self.id_img_list) - 10
+            self.last_id_img_list = list(self.id_img_list[lenlst:])
+        else:
+            self.last_id_img_list = list(self.id_img_list)
+        
         os.chdir('..')
         
         return True
@@ -183,8 +190,8 @@ class MainWindow(tk.Tk):
             if folder != '':
                 os.makedirs(folder, exist_ok = True)
             else:
-                folder = self.club_folder+'\\'+self.img_club_folder
-            id_file = self.club_folder+'\\'+self.img_id_file
+                folder = self.club_folder+'/'+self.img_club_folder
+            id_file = self.club_folder+'/'+self.img_id_file
             req = requests.get(url)
             if req.status_code != 200:
                 return False
@@ -194,7 +201,7 @@ class MainWindow(tk.Tk):
             t = t.split(':')
             t = '_'.join(t)
             filename = str(id_img)+'.jpg'
-            fold = folder+ '\\' + filename
+            fold = folder+ '/' + filename
             state_file = False
             with open(fold, 'wb') as f:
                 try:

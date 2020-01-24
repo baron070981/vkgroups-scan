@@ -10,10 +10,6 @@ from dataclasses import dataclass
 
 
 
-
-
-
-
 @dataclass
 class VkData:
     img_id:int = 0
@@ -76,7 +72,6 @@ class VkGroupsHelper:
                     url = data_items['attachments'][0]['photo']['sizes'][-2]['url']
                     iid = data_items['attachments'][0]['photo']['id']
                     if iid not in self.cach_ids:
-                        #print(iid,' ', url)
                         self.cach_ids.add(iid)
                         data_list.append(DataImg(iid, url))
 
