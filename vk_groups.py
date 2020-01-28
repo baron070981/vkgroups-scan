@@ -25,7 +25,8 @@ TH = None
 log = logs.Logs() # объект записи хода выполнения программы
 dtc = vkd.VkData() # объект с данными api
 vk = vkd.VkGroupsHelper() # объект для работы с api
-root = disp.MainWindow() #
+root = disp.MainWindow()
+root.geometry('+1+1')
 
 root.file_state = root.default_insert()
 
