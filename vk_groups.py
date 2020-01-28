@@ -35,11 +35,11 @@ def action():
     global vk
     global dtc
     global LOCK
+    global TH
     if root.STATE_DATA == False:
         dtc.DATA_STATE = root.get_data_from_widgets()
         if dtc.API_INIT == False:
             dtc.API_INIT = vk.init_api(root.login, root.password, root.app_id)
-            TH = threading.Thread(target = root.progress_thread).start()
     if dtc.DATA_STATE and root.STATE_DATA and dtc.API_INIT:
         LOCK = True
     else:
@@ -61,9 +61,11 @@ def get_data_images(LOCK_STATE = False):
 def mains(event):
     global LOCK
     global GETDATA
+    global TH
     action()
     if LOCK:
         while True:
+            TH = threading.Thread(target = root.progress_thread).start()
             get_data_images(LOCK_STATE = dtc.DATA_STATE)
             dtc.OFFSET += 10
             if len(data_list) > 0 and data_list[0].img_id in root.last_id_img_list:
@@ -75,7 +77,8 @@ def mains(event):
                 root.show_image(data.url_img, data.img_id, save_state = True)
                 time.sleep(.600)
             if dtc.OFFSET >= 300 or GETDATA == False:
-                #TH.join()
+                TH.join()
+                LOCK = False
                 break
 
 
@@ -85,7 +88,6 @@ def mains(event):
 
 if __name__ == '__main__':
     root.button_start.bind('<Button 1>', mains)
-
     root.update()
     root.mainloop()
     log.write_from_loglist()
