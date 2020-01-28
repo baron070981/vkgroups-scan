@@ -69,6 +69,7 @@ class MainWindow(tk.Tk):
         self.id_img_list = list()
         self.last_id_img_list = list()
         self.progress_count = 0
+        self.progress['maximum'] = 100
 
 
     def set_lists(self, appid_list, owner_list):
@@ -134,9 +135,9 @@ class MainWindow(tk.Tk):
                 except:
                     continue
         
-        if len(self.id_img_list) > 10:
-            lenlst = len(self.id_img_list) - 10
-            self.last_id_img_list = list(self.id_img_list[lenlst:])
+        if len(self.id_img_list) > 5:
+            lenlst = len(self.id_img_list) - 5
+            self.last_id_img_list = list(self.id_img_list[0:5])
         else:
             self.last_id_img_list = list(self.id_img_list)
         
