@@ -11,6 +11,7 @@ from pprint import pprint
 import tkinter
 from PIL import ImageTk, Image
 from tkinter import messagebox
+import threading
 
 #filestate = False
 
@@ -18,6 +19,7 @@ from tkinter import messagebox
 GETDATA = True
 LOCK = False
 data_list = list()
+TH = None
 
 # СОЗДАНИЕ ОБЪЕКТОВ
 log = logs.Logs() # объект записи хода выполнения программы
@@ -37,6 +39,7 @@ def action():
         dtc.DATA_STATE = root.get_data_from_widgets()
         if dtc.API_INIT == False:
             dtc.API_INIT = vk.init_api(root.login, root.password, root.app_id)
+            TH = threading.Thread(target = root.progress_thread).start()
     if dtc.DATA_STATE and root.STATE_DATA and dtc.API_INIT:
         LOCK = True
     else:
@@ -72,6 +75,7 @@ def mains(event):
                 root.show_image(data.url_img, data.img_id, save_state = True)
                 time.sleep(.600)
             if dtc.OFFSET >= 300 or GETDATA == False:
+                #TH.join()
                 break
 
 

@@ -36,6 +36,8 @@ class MainWindow(tk.Tk):
         self.label_data = tk.Label(text = 'data:')
         self.text_data = tk.Text(bg = 'blue', fg = 'yellow', height=2, width = 10)
 
+        self.progress = ttk.Progressbar(mode = 'determinate')
+
         self.img_label = tk.Label(bg = '#6EC4FB')
 
         self.log_label.grid(row = 0, column = 0, sticky = 'w'+'s'+'n'+'e')
@@ -49,6 +51,9 @@ class MainWindow(tk.Tk):
         self.button_start.grid(row = 8, column = 0, padx = 10, pady = 15, sticky = 'w'+'s'+'n'+'e')
         self.label_data.grid(row = 9, column = 0, pady = 10, sticky = 'w'+'s'+'n'+'e')
         self.text_data.grid(row = 10, column = 0, padx = 10, pady = 10, sticky = 'w'+'e')
+
+        self.progress.grid(row=11, column=0, padx = 10, pady = 15, sticky = 'w'+'s'+'n'+'e')
+        
         self.img_label.grid(row = 0, rowspan = 11, column = 1, sticky = 'w'+'s'+'n'+'e')
 
         self.STATE_DATA = False
@@ -63,13 +68,21 @@ class MainWindow(tk.Tk):
         self.img_club_folder = ''
         self.id_img_list = list()
         self.last_id_img_list = list()
+        self.progress_count = 0
 
 
     def set_lists(self, appid_list, owner_list):
         self.app_id_list = list(appid_list)
         self.owner_list = list(owner_list)
         return len(self.app_id_list), len(self.owner_list)
+    
 
+    def progress_thread(self):
+        if self.progress_count >= 100:
+            self.progress_count = 0
+        self.progress['value'] = self.progress_count
+        self.progress_count +=10
+        self.progress.update()
 
 
     def get_data_from_widgets(self):
