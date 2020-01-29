@@ -75,6 +75,8 @@ class MainWindow(tk.Tk):
         self.last_id_img_list = list()
         self.progress_count = 0
         self.progress['maximum'] = 100
+        
+        self.create_subwindow(300, 1)
 
 
     def create_subwindow(self, posx = 1, posy = 1):
@@ -247,9 +249,9 @@ class MainWindow(tk.Tk):
                     print('Error write id to file')
             if state_file:
                 self.image = ImageTk.PhotoImage(Image.open(fold))
-                self.img_label.configure(image = self.image)
-                self.img_label.image = self.image
-                self.update()
+                self.panel.configure(image = self.image)
+                self.panel.image = self.image
+                self.panel.update()
                 if save_state == False:
                     os.remove(fold)
 
