@@ -26,8 +26,8 @@ class MainWindow(tk.Tk):
         self.appid_label = tk.Label(text = 'id app')
         self.owner_label = tk.Label(text = 'id club')
 
-        self.log_entry = tk.Entry()
-        self.pas_entry = tk.Entry()
+        self.log_entry = tk.Entry(bg='red', fg='yellow')
+        self.pas_entry = tk.Entry(bg='red', fg='yellow')
         self.appid_combo = ttk.Combobox(values = self.app_id_list, height = 3)
         self.owner_combo = ttk.Combobox(values = self.owner_list, height = 3)
 
@@ -39,6 +39,9 @@ class MainWindow(tk.Tk):
         self.progress = ttk.Progressbar(mode = 'determinate')
 
         self.img_label = tk.Label(bg = '#6EC4FB')
+        
+        # self.style = ttk.Style()
+        # self.style.map('Tcombobox', selectbackground='#15E3EB')
 
         self.log_label.grid(row = 0, column = 0, sticky = 'w'+'s'+'n'+'e')
         self.log_entry.grid(row = 1, column = 0, padx = 10, sticky = 'w'+'s'+'n'+'e')
@@ -49,10 +52,10 @@ class MainWindow(tk.Tk):
         self.owner_label.grid(row = 6, column = 0, sticky = 'w'+'s'+'n'+'e')
         self.owner_combo.grid(row = 7, column = 0, padx = 10, sticky = 'w'+'s'+'n'+'e')
         self.button_start.grid(row = 8, column = 0, padx = 10, pady = 15, sticky = 'w'+'s'+'n'+'e')
-        self.label_data.grid(row = 9, column = 0, pady = 10, sticky = 'w'+'s'+'n'+'e')
-        self.text_data.grid(row = 10, column = 0, padx = 10, pady = 10, sticky = 'w'+'e')
+        self.label_data.grid(row = 9, column = 0, pady = 3, sticky = 'w'+'s'+'n'+'e')
+        self.text_data.grid(row = 10, column = 0, padx = 3, pady = 10, sticky = 'w'+'s'+'n'+'e')
 
-        self.progress.grid(row=11, column=0, padx = 10, pady = 15, sticky = 'w'+'s'+'n'+'e')
+        self.progress.grid(row=11, column=0, padx = 10, pady = 5, sticky = 'w'+'s'+'n'+'e')
         
         self.img_label.grid(row = 0, rowspan = 11, column = 1, sticky = 'w'+'s'+'n'+'e')
         
