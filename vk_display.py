@@ -55,6 +55,8 @@ class MainWindow(tk.Tk):
         self.progress.grid(row=11, column=0, padx = 10, pady = 15, sticky = 'w'+'s'+'n'+'e')
         
         self.img_label.grid(row = 0, rowspan = 11, column = 1, sticky = 'w'+'s'+'n'+'e')
+        
+        self.image_window = None
 
         self.STATE_DATA = False
         self.login = None
@@ -71,6 +73,14 @@ class MainWindow(tk.Tk):
         self.progress_count = 0
         self.progress['maximum'] = 100
 
+
+    def create_subwindow(self, posx = 1, posy = 1):
+        self.subwindow = tk.Toplevel()
+        self.subwindow.geometry('+{}+{}'.format(posx, posy))
+        self.panel = tk.Label(self.subwindow)
+        self.panel.pack()
+        
+    
 
     def set_lists(self, appid_list, owner_list):
         self.app_id_list = list(appid_list)
